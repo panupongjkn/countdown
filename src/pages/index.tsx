@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { DatePicker, Space, Form, Button, Input } from "antd";
 import moment from "moment";
 import { countdownRef } from "../tools/firebase";
+import Swal from "sweetalert2";
+import { Redirect } from "react-router-dom";
 
 const Background = styled.div`
   width: 100vw;
@@ -20,20 +22,43 @@ const Box = styled.div`
 `;
 
 const Index: React.FC = () => {
+  const [redirect, setRedirect] = useState<Boolean>(false);
+  const [id, setId] = useState<string>("");
+
   const disabledDate = (current: any) => {
     // Can not select days before today and today
     return current && current < moment().endOf("day");
   };
 
+  const checkCountdownName = (name: string, namedb: string) => {
+    return new Promise<Boolean>((resolve, reject) => {
+      console.log(name, namedb);
+      if (name === namedb) {
+        return resolve(true);
+      } else {
+        return resolve(false);
+      }
+    });
+  };
+
   const onFinish = (values: any) => {
-    console.log(values.countdown_date.toString());
     const item = {
       name: values.countdown_name,
       date: values.countdown_date.toString(),
     };
     countdownRef.push(item);
+    Swal.fire({
+      icon: "success",
+      title: "Create success",
+      timer: 1500,
+    }).then(() => {
+      setId(values.countdown_name);
+      setRedirect(true);
+    });
   };
-
+  if (redirect) {
+    return <Redirect to={`/${id}`} />;
+  }
   return (
     <div>
       <Background>
