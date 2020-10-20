@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import { countdownRef } from "../tools/firebase";
+import { Button } from "antd";
+import { Link } from "react-router-dom";
 
 const Background = styled.div`
   width: 100vw;
@@ -91,6 +93,19 @@ const Countdown: React.FC = () => {
                 </>
               )}
             </Box>
+          </div>
+          <div
+            className="pb-5 container"
+            style={{
+              position: "absolute",
+              zIndex: 3,
+              width: "100%",
+              bottom: 0,
+            }}
+          >
+            <Link to="/">
+              <Button type="primary">back</Button>
+            </Link>
           </div>
         </div>
       </Background>
