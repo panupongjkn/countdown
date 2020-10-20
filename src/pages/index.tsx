@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { DatePicker, Space, Form, Button, Input } from "antd";
 import moment from "moment";
+import { countdownRef } from "../tools/firebase";
 
 const Background = styled.div`
   width: 100vw;
@@ -25,7 +26,12 @@ const Index: React.FC = () => {
   };
 
   const onFinish = (values: any) => {
-    console.log(values);
+    console.log(values.countdown_date.toString());
+    const item = {
+      name: values.countdown_name,
+      date: values.countdown_date.toString(),
+    };
+    countdownRef.push(item);
   };
 
   return (
